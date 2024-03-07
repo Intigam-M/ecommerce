@@ -21,7 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 api_patterns = [
-    path('auth/', include('user.urls')),
+    path('auth/', include('users.urls')),
     path('products/', include('products.urls')),
 ]
 

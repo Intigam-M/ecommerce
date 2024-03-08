@@ -10,6 +10,7 @@ class Product(models.Model):
     created_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='created_products')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owned_products')
     created_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

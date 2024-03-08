@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Comment
+from .models import Product, Comment, RecoveryLink
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,5 +12,11 @@ class ProductSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'image', 'price', 'created_by', 'comments']
+        fields = ['id', 'name', 'description', 'image', 'price', 'created_by', 'comments', 'is_active']
         read_only_fields = ['created_by']
+
+
+class RecoveryLinkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RecoveryLink
+        fields = ['recovery_link']

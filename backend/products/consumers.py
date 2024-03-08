@@ -10,9 +10,9 @@ from .serializers import CommentSerializer
 
 class CommentConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.file_id = self.scope['url_route']['kwargs']['file_id']
-        self.room_name = f'file_{self.file_id}_comments'
-        self.room_group_name = f'comments_{self.file_id}'
+        self.product_id = self.scope['url_route']['kwargs']['product_id']
+        self.room_name = f'file_{self.product_id}_comments'
+        self.room_group_name = f'comments_{self.product_id}'
 
         await self.channel_layer.group_add(
             self.room_group_name,
@@ -57,7 +57,7 @@ class CommentConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def save_comment(self, comment_content):
-        comment = Comment(content=comment_content, file=Product.objects.get(id=int(self.file_id)), author=self.scope['user'] )
+        comment = Comment(content=comment_content, file=Product.objects.get(id=int(self.product_id)), author=self.scope['user'] )
         comment.save()
         return comment
 

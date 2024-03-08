@@ -1,6 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
-from .models import Comment, File
+from .models import Comment, Product
 from asgiref.sync import sync_to_async
 from django.contrib.auth.models import User
 from urllib.parse import parse_qs
@@ -57,7 +57,7 @@ class CommentConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def save_comment(self, comment_content):
-        comment = Comment(content=comment_content, file=File.objects.get(id=int(self.file_id)), author=self.scope['user'] )
+        comment = Comment(content=comment_content, file=Product.objects.get(id=int(self.file_id)), author=self.scope['user'] )
         comment.save()
         return comment
 

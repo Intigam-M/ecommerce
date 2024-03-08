@@ -4,11 +4,21 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework import pagination
+
+class CustomPagination(pagination.PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination
+
+    def get_paginated_response(self, data):
+        return self.paginator.get_paginated_response(data)
 
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)

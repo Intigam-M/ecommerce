@@ -32,33 +32,22 @@ function Navbar() {
                   href="/login"
                   className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                 >
-                  Add product
+                  Login
                 </Link>
-                {!user && (
-                  <Link
-                    href="/login"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  >
-                    Login
-                  </Link>
-                )}
-                {!user && (
-                  <Link
-                    href="/register"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  >
-                    Register
-                  </Link>
-                )}
-                {user && (
-                  <Link
-                    onClick={() => dispatch(removeUser())}
-                    href="/login"
-                    className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                  >
-                    Logout
-                  </Link>
-                )}
+                <Link
+                  href="/register"
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Register
+                </Link>
+
+                <Link
+                  onClick={() => dispatch(removeUser())}
+                  href="/login"
+                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                >
+                  Logout
+                </Link>
               </div>
             </div>
           </div>

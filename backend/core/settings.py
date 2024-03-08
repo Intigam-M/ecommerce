@@ -27,6 +27,7 @@ SECRET_KEY = getenv('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CORS_ALLOWED_ORIGINS = getenv('CORS_ALLOWED_ORIGINS').split(', ')
 
 
 # Application definition

@@ -29,7 +29,6 @@ class CommentConsumer(AsyncWebsocketConsumer):
         )
 
 
-
     async def receive(self, text_data):
         data = json.loads(text_data)
         comment_content = data['message']
@@ -47,12 +46,8 @@ class CommentConsumer(AsyncWebsocketConsumer):
         )
 
 
-
-    # Receive message from room group
     async def comment_message(self, event):
-        # Send message to WebSocket
         await self.send(text_data=event['message'])
-
 
 
     @sync_to_async

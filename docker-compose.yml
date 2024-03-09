@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./backend
+    image: intigamm/ecommerce_backend
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    restart: on-failure
+    
+    command: >
+      bash -c "
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8000
+      "
+
+  frontend:
+    build: ./frontend
+    image: intigamm/ecommerce_frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+  database:
+    image: postgres:14-alpine
+    env_file:
+      - .env
+    volumes:
+      - ecommerce_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+
+
+volumes:
+  ecommerce_data:

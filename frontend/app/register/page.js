@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import APIClient from "@/services/api-client";
 import { setUser } from "@/store/auth";
-
+import toast from "react-hot-toast";
 
 const apiClient = new APIClient("/auth/register/");
 
@@ -20,6 +20,8 @@ function RegisterPage() {
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+
     const user = await apiClient.create({
       first_name: firstName,
       last_name: lastName,
@@ -27,15 +29,16 @@ function RegisterPage() {
       username: userName,
       password,
     });
-    
+
     if (user) {
       router.replace("/");
       dispatch(setUser(user));
     }
+    
   };
 
   return (
-    <form className="w-full max-w-lg mx-auto">
+    <form className="w-full max-w-lg mx-auto" onSubmit={handleSubmit}>
       <div className="flex flex-wrap -mx-3 mb-6">
         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
           <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -46,7 +49,7 @@ function RegisterPage() {
             className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
             id="grid-first-name"
             type="text"
-            placeholder="Jane"
+            required
           />
         </div>
         <div className="w-full md:w-1/2 px-3">
@@ -57,7 +60,7 @@ function RegisterPage() {
             onChange={(e) => setLastName(e.target.value)}
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             type="text"
-            placeholder="Doe"
+            required
           />
         </div>
       </div>
@@ -69,8 +72,8 @@ function RegisterPage() {
           <input
             onChange={(e) => setEmail(e.target.value)}
             className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
-            type="text"
-            placeholder="Jane"
+            type="email"
+            required
           />
         </div>
         <div className="w-full md:w-1/2 px-3">
@@ -81,7 +84,7 @@ function RegisterPage() {
             onChange={(e) => setUserName(e.target.value)}
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             type="text"
-            placeholder="Doe"
+            required
           />
         </div>
       </div>
@@ -94,19 +97,16 @@ function RegisterPage() {
             onChange={(e) => setPassword(e.target.value)}
             className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
             type="password"
-            placeholder="******************"
+            required
           />
         </div>
       </div>
       <div className="flex flex-wrap -mx-3 mb-2">
         <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-          <button
-            onClick={handleSubmit}
+          <input
+            type="submit"
             className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-            type="button"
-          >
-            Sign up
-          </button>
+          />
         </div>
       </div>
     </form>

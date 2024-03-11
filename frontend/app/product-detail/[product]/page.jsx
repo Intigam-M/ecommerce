@@ -1,7 +1,7 @@
 "use client";
 import Comment from "@/components/comments";
 import { useState, useEffect } from "react";
-import WebSocketInstance from '@/utils/webSocketConfig';
+import WebSocketInstance from "@/utils/webSocketConfig";
 import { useSelector } from "react-redux";
 
 const ProductDetailPage = ({ params: { product } }) => {
@@ -26,7 +26,7 @@ const ProductDetailPage = ({ params: { product } }) => {
     };
 
     WebSocketInstance.connect(
-      `ws://localhost:8000/ws/product/${product}/comments/?user_id=${user.id}`
+      `ws://localhost:8000/ws/product/${product}/comments/?user_id=${user.id || 1}`
     );
     WebSocketInstance.handleIncomingMessage(handleIncomingMessage);
 
@@ -75,26 +75,28 @@ const ProductDetailPage = ({ params: { product } }) => {
         </div>
       </div>
 
-      <form className="flex gap-3">
-        <input
-          type="text"
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          className="border flex-1 rounded p-3 mb-4"
-          placeholder="Add comment"
-        />
-        <div>
-          <button
-            onClick={sendComment}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded"
-          >
-            Add Comment
-          </button>
-        </div>
-      </form>
+      {user && (
+        <form className="flex gap-3">
+          <input
+            type="text"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+            className="border flex-1 rounded p-3 mb-4"
+            placeholder="Add comment"
+          />
+          <div>
+            <button
+              onClick={sendComment}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 py-3 rounded"
+            >
+              Add Comment
+            </button>
+          </div>
+        </form>
+      )}
 
       {Object.keys(comments).map((comment, index) => (
-        <Comment key={index} comment={comments[comment]} />
+        <Comment key={index} comment={comments[comment]} setComments={setComments} user={user} />
       ))}
     </>
   );

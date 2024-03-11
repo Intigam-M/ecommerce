@@ -6,11 +6,16 @@ from rest_framework import status
 from rest_framework import pagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.viewsets import ModelViewSet
+
+
 
 class CustomPagination(pagination.PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 100
+
+
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
@@ -24,17 +29,26 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(created_by=self.request.user)
 
+
+
 class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
-class CommentCreateAPIView(generics.CreateAPIView):
+
+
+class DeleteCommentView(generics.DestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = (IsAuthenticated,)
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if request.user == instance.user:
+            self.perform_destroy(instance)
+            return Response({'detail': 'Comment deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            return Response({'detail': 'You are not allowed to delete this comment.'}, status=status.HTTP_403_FORBIDDEN)
 
 
 

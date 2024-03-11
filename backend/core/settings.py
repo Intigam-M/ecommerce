@@ -89,7 +89,7 @@ DATABASES = {
         "NAME": getenv('POSTGRES_DB'),
         "USER": getenv('POSTGRES_USER'),
         "PASSWORD": getenv('POSTGRES_PASSWORD'),
-        "HOST": 'localhost',
+        "HOST": getenv('POSTGRES_HOST'),
         "PORT": getenv('POSTGRES_PORT'),
     }
 }

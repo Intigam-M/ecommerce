@@ -3,10 +3,16 @@ import React from "react";
 import Link from "next/link";
 import { removeUser } from "@/store/auth";
 import { useSelector, useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
 
 function Navbar() {
-  const { user } = useSelector((state) => state.auth);
+  const [user, setUser] = useState();
+  const data = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setUser(data.user);
+}, [data]);
 
   return (
     <nav className="bg-gray-800">
@@ -17,7 +23,7 @@ function Navbar() {
               <Link href="/">
                 <span className="pr-4">LOGO</span>
                 <span className="text-md">
-                  {user.first_name} {user.last_name}
+                  {user?.first_name} {user?.last_name}
                 </span>
               </Link>
             </div>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { addProduct } from "@/utils/services/product";
+import withAuth from "@/components/HOC/withAuth";
 
 const AddProductPage = () => {
     const [name, setName] = useState("");
@@ -87,4 +88,4 @@ const AddProductPage = () => {
     );
 };
 
-export default AddProductPage;
+export default withAuth(AddProductPage);

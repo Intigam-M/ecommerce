@@ -1,22 +1,13 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { useDispatch } from "react-redux";
 import { removeUser } from "@/store/auth";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+
 
 function Navbar() {
   const { user } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!user) {
-      router.replace("/login");
-    }
-  }, [user]);
+  const dispatch = useDispatch()
 
   return (
     <nav className="bg-gray-800">
@@ -24,30 +15,42 @@ function Navbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center justify-between w-full">
             <div className="flex-shrink-0">
-              <span className="text-white">LOGO</span>
+              <span className="text-white">LOGO {user.first_name} {user.last_name}</span>
             </div>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
-                <Link
-                  href="/login"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/register"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Register
-                </Link>
+                {!user ? (
+                  <>
+                    <Link
+                      href="/login"
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    >
+                      Login
+                    </Link>
+                    <Link
+                      href="/register"
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    >
+                      Register
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      href="/add-product"
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    >
+                      Add Product
+                    </Link>
 
-                <Link
-                  onClick={() => dispatch(removeUser())}
-                  href="/login"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Logout
-                </Link>
+                    <button
+                      onClick={() => dispatch(removeUser())}
+                      className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    >
+                      Logout
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>

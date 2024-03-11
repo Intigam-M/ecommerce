@@ -3,11 +3,8 @@ import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import APIClient from "@/services/api-client";
 import { setUser } from "@/store/auth";
 import toast from "react-hot-toast";
-
-const apiClient = new APIClient("/auth/register/");
 
 function RegisterPage() {
   const [firstName, setFirstName] = useState("");
@@ -21,20 +18,30 @@ function RegisterPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const registerUser = await fetch(
+      "http://localhost:8000/api/auth/register/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+          email,
+          username: userName,
+          password,
+        }),
+      }
+    );
+    const res = await registerUser.json();
 
-    const user = await apiClient.create({
-      first_name: firstName,
-      last_name: lastName,
-      email,
-      username: userName,
-      password,
-    });
-
-    if (user) {
+    if (res.message) {
+      toast.error(res.message);
+    } else {
       router.replace("/");
-      dispatch(setUser(user));
+      dispatch(setUser(res));
     }
-    
   };
 
   return (

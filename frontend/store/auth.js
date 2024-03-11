@@ -3,7 +3,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    user:  typeof window !== 'undefined' && localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : false
+    user:  localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : false
 }
 
 const auth = createSlice({
@@ -11,11 +11,11 @@ const auth = createSlice({
     initialState,
     reducers: {
         setUser(state, action) {
-            typeof window !== 'undefined' && localStorage.setItem('user', JSON.stringify(action.payload))
+            localStorage.setItem('user', JSON.stringify(action.payload))
             state.user = action.payload
         },
         removeUser(state) {
-            typeof window !== 'undefined' && localStorage.removeItem('user')
+            localStorage.removeItem('user')
             state.user = false
         }
     }

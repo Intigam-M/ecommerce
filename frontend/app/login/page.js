@@ -3,9 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/store/auth";
-import APIClient from "@/services/api-client";
-
-const apiClient = new APIClient('/auth/login/');
+import toast from "react-hot-toast";
 
 function LoginPage() {
   const [userInfo, setEmail] = useState("");
@@ -15,19 +13,28 @@ function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = await apiClient.create({ user_info:userInfo, password });
+    const loginUser = await fetch("http://localhost:8000/api/auth/login/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user_info: userInfo, password }),
+    });
+    const res = await loginUser.json();
 
-    if (user) {
+    if (res.message) {
+      toast.error(res.message);
+    } else {
       router.replace("/");
-      dispatch(setUser(user));
+      dispatch(setUser(res));
     }
   };
 
   return (
-    <form className="w-full max-w-sm mx-auto"    onSubmit={handleSubmit}>
+    <form className="w-full max-w-sm mx-auto" onSubmit={handleSubmit}>
       <div className="md:flex md:items-center mb-6">
         <div className="md:w-1/3">
-          <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" >
+          <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4">
             User Name
           </label>
         </div>

@@ -1,22 +1,25 @@
 import ProductCard from "@/components/ProductCard";
-import Link from "next/link";
+import { getProducts } from "@/utils/services/product";
 
 const Home = async () => {
-  const getProducts = await fetch("http://localhost:8000/api/products");
-  const products = await getProducts.json();
 
+  const products = await getProducts();
 
   return (
     <div>
-      <div className="grid grid-cols-4 gap-10 justify-center pb-4">
-        {products.results.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
-      <div className="flex justify-center gap-5">
-          <Link href='?page=2' className="bg-gray-300 px-4 py-2 rounded-lg">Previous</Link>
-          <Link href='/' className="bg-gray-300 px-4 py-2 rounded-lg">Next</Link>
-        </div>
+      {products.count === 0 ? (
+        <h1 className="text-3xl font-semibold text-slate-300 text-center pt-12 tracking-wider">
+          No products available
+        </h1>
+      ) : (
+        <>
+          <div className="grid grid-cols-4 gap-10 justify-center pb-4">
+            {products.results.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };

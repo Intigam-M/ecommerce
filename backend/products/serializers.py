@@ -11,6 +11,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class ProductSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
+    created_by = UserInfoSerializer(read_only=True)
     
     class Meta:
         model = Product

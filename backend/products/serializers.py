@@ -1,7 +1,9 @@
 from rest_framework import serializers
 from .models import Product, Comment, RecoveryLink
+from users.serializers import UserInfoSerializer
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = UserInfoSerializer(read_only=True)
     class Meta:
         model = Comment
         fields = ['id', 'product', 'user', 'text', 'created_at']

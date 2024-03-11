@@ -156,7 +156,7 @@ EMAIL_HOST_PASSWORD = 'your_password'
 
 
 
-CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_BROKER_URL = "http://localhost:6379"
 
 # Channels
 ASGI_APPLICATION = "core.asgi.application"
@@ -164,7 +164,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("redis", 6379)],
+            "hosts": [("localhost", 6379)],
         },
     },
 }

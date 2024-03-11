@@ -52,7 +52,7 @@ class CommentConsumer(AsyncWebsocketConsumer):
 
     @sync_to_async
     def save_comment(self, comment_content):
-        comment = Comment(content=comment_content, file=Product.objects.get(id=int(self.product_id)), author=self.scope['user'] )
+        comment = Comment(text=comment_content, product=Product.objects.get(id=int(self.product_id)), user=self.scope['user'] )
         comment.save()
         return comment
 

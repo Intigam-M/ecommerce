@@ -1,10 +1,11 @@
 from .serializers import ProductSerializer, CommentSerializer, RecoveryLinkSerializer
 from .models import Product, Comment, RecoveryLink
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import pagination
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class CustomPagination(pagination.PageNumberPagination):
     page_size = 10
@@ -14,7 +15,7 @@ class CustomPagination(pagination.PageNumberPagination):
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly] 
     pagination_class = CustomPagination
 
     def get_paginated_response(self, data):
@@ -26,7 +27,6 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
 class ProductDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
 
 class CommentCreateAPIView(generics.CreateAPIView):
     queryset = Comment.objects.all()

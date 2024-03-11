@@ -12,6 +12,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+    
 
 class Comment(models.Model):
     product = models.ForeignKey(Product, related_name='comments', on_delete=models.CASCADE)
@@ -21,6 +22,10 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.product.name}'
+    
+    class Meta:
+        ordering = ['-created_at']
+
 
 class RecoveryLink(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

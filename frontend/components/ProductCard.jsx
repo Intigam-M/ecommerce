@@ -1,25 +1,24 @@
 import React from "react";
+import Link from "next/link";
 
-function ProductCard() {
+function ProductCard({product}) {
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg">
+    <div className="max-w-sm rounded overflow-hidden shadow-lg border">
       <img
         className="w-full"
         src="https://tailwindcss.com/img/card-top.jpg"
-        alt="Sunset in the mountains" />
+        alt="" />
 
       <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">The Coldest Sunset</div>
+        <div className="font-bold text-xl mb-2">{product.name}</div>
         <p className="text-gray-700 text-base">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus
-          quia, nulla! Maiores et perferendis eaque, exercitationem praesentium
-          nihil.
+        {product.description}
         </p>
       </div>
       <div className="px-6 pt-4 pb-2">
-        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <Link href={`product-detail/${product.id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Detail
-        </button>
+        </Link>
       </div>
     </div>
   );
